@@ -1,18 +1,24 @@
 import mysql from "promise-mysql";
-import config from "./../config.js";
+import config from "../config.js";
 
-let connection;
+let dbConnection = null;
 
-const getConnection = async () => {
-  if (!connection) {
-    connection = await mysql.createConnection({
-      host: config.host,
-      database: config.database,
-      user: config.user,
-      password: config.password,
-    });
+const connectDB = async () => {
+  try {
+    if (!dbConnection) {
+      dbConnection = await mysql.createConnection({
+        host: config.host,
+        database: config.database,
+        user: config.user,
+        password: config.password,
+      });
+      console.log("✅ Base de datos MySQL conectada exitosamente.");
+    }
+    return dbConnection;
+  } catch (err) {
+    console.error("❌ Fallo en la conexión a la base de datos:", err.message);
+    throw err;
   }
-  return connection;
 };
 
-export default getConnection;
+export default connectDB;

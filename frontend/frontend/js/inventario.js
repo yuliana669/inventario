@@ -1,27 +1,32 @@
-import { obtainCategories } from "./../apiConnection/consumeApi.js";
+import { fetchCategories } from "./../apiConnection/consumeApi.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   getCategories();
 });
 
 async function getCategories() {
-  const categoriesObtained = await obtainCategories();
-  const container = document.querySelector('tbody');
+  try {
+    const categoriesList = await fetchCategories();
+    const tableBody = document.querySelector('tbody');
+    tableBody.innerHTML = "";
 
-  categoriesObtained.forEach((category) => {
-    const { CategoriaID, CategoriaNombre, Descripcion, Imagen } = category;
+    categoriesList.forEach((cat) => {
+      const { CategoriaID, CategoriaNombre, Descripcion, Imagen } = cat;
 
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${CategoriaID}</td>
-      <td>${CategoriaNombre}</td>
-      <td>${Descripcion}</td>
-      <td><img src="${Imagen}" width="100px" class="cuenta"></td>
-      <td><button class="btn color3">Details</button></td>
-      <td><button class="btn color2">Edit</button></td>
-      <td><button class="btn color5">Delete</button></td>
-    `;
+      const tableRow = document.createElement('tr');
+      tableRow.innerHTML = `
+        <td>${CategoriaID}</td>
+        <td>${CategoriaNombre}</td>
+        <td>${Descripcion}</td>
+        <td><img src="${Imagen}" width="100px" class="img-fluid"></td>
+        <td><button class="btn btn-info">Ver</button></td>
+        <td><button class="btn btn-warning">Modificar</button></td>
+        <td><button class="btn btn-danger">Eliminar</button></td>
+      `;
 
-    container.appendChild(row);
-  });
+      tableBody.appendChild(tableRow);
+    });
+  } catch (err) {
+    console.error("Fallo al listar las categorías:", err.message);
+  }
 }
