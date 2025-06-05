@@ -8,7 +8,7 @@ import productosRoutes from "./routes/productos.routes.js";
 
 const app = express();
 
-app.set("port", 5000);
+app.set("port", process.env.PORT || 3306);
 
 app.use(express.json());
 
@@ -18,5 +18,10 @@ app.use("/api/categorias", categoriaRoutes);
 app.use("/api/empleados", empleadosRoutes);
 app.use("/api/clientes", clientesRoutes);
 app.use("/api/productos", productosRoutes);
+
+app.get('/',(req,res)=>{
+ res.send('REST API EN RENDER WITHOUT DATABASE ENDPOINTS')
+})
+
 
 export default app;

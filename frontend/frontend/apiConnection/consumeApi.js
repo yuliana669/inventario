@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/categorias";
+const API_URL = "http://localhost:3306/api/categorias";
 
 export const fetchCategories = async () => {
   try {
